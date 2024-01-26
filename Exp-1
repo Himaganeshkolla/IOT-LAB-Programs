@@ -1,0 +1,62 @@
+//Retrieve temperature and humidity data from thingspeak
+
+#include <ESP8266 WiFi.h>
+#include<SPI.h>
+#include<Wire.h>
+#include<Adafruit_GFX.h>
+#include<Adafruit_SSD1306.h>
+#include<Adafruit_I2Device.h>
+#define OLED-RESET LED-BUILTIN 
+Adafruit_SSD1306 display (OLED-RESET);
+#include "Thingspeak.h" 
+char ssid[]= "Redmi 10 prime"; 
+char pass[] = "familyever";
+int KeyIndex = 0; 
+WiFiClient client;
+unsigned long mych = 2365075; 
+const char *myAPIKey = "OQIOFOPVSU9FXD3H"; 
+int statusCode=0; 
+int field[8] = {1, 2};
+void setup()
+{
+display.begin(SSD1306_SWITCHCAPVCC,OX3C);
+display.clearDisplay();
+Serial.begin(115200);
+while (!serial) { 
+;
+WiFi.mode(WIFI_STA);
+ThingSpeak.begin(client); 
+if (WiFi.status()!= WL_CONNECTED)
+{
+Serial.print("Attempting to connect to wifi"); 
+while (WiFi.status() != WL_CONNECTED)
+{
+WiFi.begin (ssid, pass); 
+Serial.print("."); 
+delay(5000);
+}
+Serial.println("\n connected");
+}
+}
+void loop() {
+Status Code=ThingSpeak.readMultipleFields(mych, myAPIkey); 
+if(statusCode==200)
+{
+float Temp = ThingSpeak.getFieldsAsFloat(field[0]); 
+float Humi = ThingSpeak.getFieldsAsFloat(field[0]);
+Serial.println("% Humidity: "+String (Humi));
+Serial.printin ("Temparature (F): " + String (Temp));
+display.setTextSize(2);
+display.setTextColor(WHITE);
+display.setCursor(0,0); 
+display.println("T:"'+String (Temp) + "H:" + String[Humi]); 
+display.display();
+}
+else {
+display.println("HTTP Error."); 
+display.display();
+Serial.printin("Problem reading channel. HTTP error code" "+ String(statusCode));
+}
+Serial.println();
+delay(5000);
+}
