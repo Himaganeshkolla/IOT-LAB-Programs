@@ -1,0 +1,23 @@
+Exp 4
+To turn on led when push button is pressed
+
+int button_pin = 6;
+int led_pin = 7;
+void setup {
+Serial.begin(9600);
+pinMode (button-pin, INPUT);
+pinMode(led-pin, OUTPUT);
+}
+void loop()
+{
+int button_state= digitalRead (button_pin);
+Serial.println(button_state);
+if (button_state == 0)
+{
+digitalWrite(led_pin, Low);
+}
+else
+{
+digitalWrite(led_pin, HIGH);
+}
+}
