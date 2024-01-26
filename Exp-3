@@ -1,0 +1,37 @@
+Exp 3
+Temperature and humidity reading
+
+#include "DHT.h"
+#define DHTPIN 2 
+#define DHT TYPE DHT11 
+DHT dht (DHTPIN, DHTTYPE); 
+void setup() { 
+Serial.begin(9600); 
+Serial.println(F("DHTxx test!")); 
+dht.begin();
+}
+void loop() {
+delay(2000);
+float h=dht.readHumidity();
+float t = dht.readTemparature(true);
+if (isnan(h) || isnan(t) || isnan (f))
+{
+ Serial.printin (F("failed to read from DHT Sensor! ")); 
+ return;
+}
+float hif = dht.ComputeHeatIndex(f,h);
+float hic = dht.ComputeHeatIndex(t,h,false);
+Serial.print (F("Humidity:"));
+Serial.print(h);
+Serial.print (F("% Temparature: "));
+
+Serial.print(t);
+
+Serial.print (F("C"));
+Serial.print(f);
+Serial.print(F("Heat index: "));
+Serial.print(hic);
+Serial.print (F("C"));
+Serial.print (hif);
+Serial.println(F("f"));
+}
