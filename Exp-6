@@ -1,0 +1,30 @@
+//To interface oled and print temperature and humidity
+
+#include <SPI.h>
+#include < dht.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include Adafruit_SSD1306.h>
+#include <Adafruit_I2CDevice.h>
+#define OLED_RESET 4
+Adafruit_SSD1306 display(OLED_RESET);
+unsigned S= A0;
+dht MyDht;
+void setup()
+{
+display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
+display.clearDisplay();
+}
+void loop()
+{
+MyDht read11(S); 
+display.setTextSize(1); 
+display.setTextColor(WHITE); 
+display.setCursor(0,0); 
+display.print("Temp: "); 
+display.print(MyDht.temparature); 
+display.setCursor(0,20); 
+display.print("Humidity:"); 
+display.print(MyDht.humidity);
+display.display();
+}
