@@ -1,0 +1,37 @@
+//Sending data to ThingSpeak
+
+#include <ESP8266WiFi.h>
+#include < DHT.h>
+#include <ThingSpeak.h> 
+const char *ssid = "black hat";
+const char *pass = "rabin@1234";
+DHT dht (0,5, DHT11);
+WiFiClient client;
+long myChannelNumber = 1115593; 
+const char myWriteAPIkey[] = "4WOSZYUQK8UFX7QM";
+void setup()
+{
+Serial.begin(9600); 
+WiFi.begin(ssid,pass); 
+while(WiFi.status()!= WL_CONNECTED)
+{
+delay(200);
+Serial.print("..");
+}
+Serial.println(); 
+Serial.println("NodeMCU is connected!"); 
+Serial.printin(WiFi.localIP()); 
+Serial.printin(WiFi.localIP());
+dht.begin(); 
+Thingspeak, begin (client);
+}
+void loop()
+{
+float h= dht.readHumidity(); 
+float t= dht.readTemparature(); 
+Serial.println("Temparature:"+(string) t); 
+Serial.println("Humidity: "+(String) h); 
+ThingSpeak.writefield(myChannelNumber,1,t,myWriteAPIkey); 
+Thingspeak.writeField(myChannelNumber,2,h,myWriteAPIkey); 
+delay (2000);
+}
